@@ -62,7 +62,14 @@ ephemeral machines, so a repository that runs a five-job matrix twice a day manu
 "unique cloners" a day, forever, without a single human being involved. The number that looks
 hardest to fake is the one your own CI inflates fastest.
 
-A second repository of mine reported 68 unique cloners over a fortnight. Same cause.
+A second repository of mine reported 68 unique cloners over the same fortnight, and it is the
+more interesting case, because there the answer was **mostly** rather than **entirely**. Its
+three biggest clone days are its three heaviest CI days, in that order. But seven other days
+recorded a handful of clones each with no workflow run at all.
+
+That distinction is the whole point of doing the split. One repository came back as pure
+machinery. The other came back as machinery plus a thin real tail, and the tail is the part
+worth knowing about.
 
 ## The number to compute instead
 
@@ -73,8 +80,14 @@ is **human clone days**: days that recorded clones and no workflow run of ours.
     rigout     7 human clone days
 
 The first number is honest and disappointing and took ten seconds to compute. The second says
-something real: seven days in a fortnight, somebody who was not a machine of mine pulled that
-repository.
+something real: on seven days in that fortnight, somebody who was not a machine of mine pulled
+that repository.
+
+Be clear about the size of it. Those seven days carry **13 clones between them**, against 460
+on the CI days, out of 473 for the fortnight. So the honest summary of the second repository is
+not "it has traffic". It is "under three per cent of its clone volume is unexplained by our own
+runners, spread thinly across half the days". That is a much smaller and much more useful thing
+to know than 68.
 
 One trap on the way there. The runs endpoint pages at 100, and one of these repositories was
 already at 99 runs for the fortnight. If you take a truncated list of CI days as the complete

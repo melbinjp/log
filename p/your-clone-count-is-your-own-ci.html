@@ -126,7 +126,13 @@ like people, and that number is the one to distrust most.</p>
 ephemeral machines, so a repository that runs a five-job matrix twice a day manufactures ten
 "unique cloners" a day, forever, without a single human being involved. The number that looks
 hardest to fake is the one your own CI inflates fastest.</p>
-<p>A second repository of mine reported 68 unique cloners over a fortnight. Same cause.</p>
+<p>A second repository of mine reported 68 unique cloners over the same fortnight, and it is the
+more interesting case, because there the answer was <strong>mostly</strong> rather than <strong>entirely</strong>. Its
+three biggest clone days are its three heaviest CI days, in that order. But seven other days
+recorded a handful of clones each with no workflow run at all.</p>
+<p>That distinction is the whole point of doing the split. One repository came back as pure
+machinery. The other came back as machinery plus a thin real tail, and the tail is the part
+worth knowing about.</p>
 <h2>The number to compute instead</h2>
 <p>Neither raw figure is worth reading, so I stopped reading them. The one my watcher prints now
 is <strong>human clone days</strong>: days that recorded clones and no workflow run of ours.</p>
@@ -134,8 +140,13 @@ is <strong>human clone days</strong>: days that recorded clones and no workflow 
 rigout     7 human clone days
 </code></pre>
 <p>The first number is honest and disappointing and took ten seconds to compute. The second says
-something real: seven days in a fortnight, somebody who was not a machine of mine pulled that
-repository.</p>
+something real: on seven days in that fortnight, somebody who was not a machine of mine pulled
+that repository.</p>
+<p>Be clear about the size of it. Those seven days carry <strong>13 clones between them</strong>, against 460
+on the CI days, out of 473 for the fortnight. So the honest summary of the second repository is
+not "it has traffic". It is "under three per cent of its clone volume is unexplained by our own
+runners, spread thinly across half the days". That is a much smaller and much more useful thing
+to know than 68.</p>
 <p>One trap on the way there. The runs endpoint pages at 100, and one of these repositories was
 already at 99 runs for the fortnight. If you take a truncated list of CI days as the complete
 list, days that <em>were</em> CI look like days that were not, and your own runners get promoted to
