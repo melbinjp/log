@@ -301,3 +301,7 @@ footer p {
     font-size: 1.5rem;
   }
 }
+
+.what a {
+  white-space: nowrap;
+}

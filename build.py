@@ -104,6 +104,13 @@ def page(inner: str, *, title: str, description: str, canonical: str,
 </main>
 <footer>
   <p>{e(PROMISE)}</p>
+  <p class="what">What the writing is about, mostly:
+     <a href="https://github.com/melbinjp/docproof">docproof</a>, which reports the claims a
+     repository's documentation makes that its code contradicts;
+     <a href="https://github.com/melbinjp/rigout">rigout</a>, an MCP server that lets an
+     authorised agent use a real machine; and
+     <a href="https://jules-prompts.wecanuseai.com/">jules-prompts</a>, a library of
+     machine-readable task prompts for coding agents.</p>
   <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
      Corrections are welcome as
      <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
