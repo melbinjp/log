@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://log.wecanuseai.com/sitemap.xml

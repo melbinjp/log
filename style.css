@@ -1,0 +1,303 @@
+/* log.wecanuseai.com
+   Text first. No web fonts, no client JavaScript, no tracker: the whole site is a few
+   kilobytes of HTML and this file, so it arrives on a bad connection and stays readable
+   with CSS switched off entirely. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #fbfaf8;
+  --fg: #1c1b19;
+  --muted: #5f5c57;
+  --rule: #e2ddd5;
+  --link: #0b5a4a;
+  --accent: #a8442a;
+  --code-bg: #f2eee7;
+  --measure: 38rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14150f;
+    --fg: #e9e6df;
+    --muted: #9d9a92;
+    --rule: #32332b;
+    --link: #7fcfb6;
+    --accent: #e59a7f;
+    --code-bg: #1e201a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0 1.25rem 4rem;
+  background: var(--bg);
+  color: var(--fg);
+  font: 1.0625rem/1.65 ui-serif, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  overflow-wrap: break-word;
+}
+
+header,
+main,
+footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.75rem 0 1.25rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.5rem;
+}
+
+.wordmark {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.wordmark::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+header nav {
+  display: flex;
+  gap: 1.125rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.8125rem;
+}
+
+header nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+header nav a:hover,
+header nav a:focus {
+  color: var(--fg);
+  text-decoration: underline;
+}
+
+/* Index ------------------------------------------------------------------- */
+
+.intro h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.015em;
+}
+
+.tagline {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.promise {
+  margin: 0 0 3rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  border-left: 2px solid var(--accent);
+  padding-left: 0.875rem;
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+.entry {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.entry-title {
+  display: block;
+  font-size: 1.3125rem;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+.entry-title:hover,
+.entry-title:focus {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.entry-desc {
+  margin: 0.5rem 0 0.5rem;
+  color: var(--muted);
+}
+
+.entry time,
+.byline time {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Article ----------------------------------------------------------------- */
+
+article h1 {
+  font-size: 1.875rem;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.015em;
+}
+
+.byline {
+  margin: 0 0 2.5rem;
+}
+
+article h2,
+article h3 {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.3;
+  margin: 2.5rem 0 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+article h2 {
+  font-size: 1.25rem;
+}
+
+article h3 {
+  font-size: 1.0625rem;
+}
+
+article p {
+  margin: 0 0 1.15rem;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.12em;
+}
+
+strong {
+  font-weight: 700;
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  color: var(--muted);
+}
+
+code {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  background: var(--code-bg);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.875rem 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+th {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+.back {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Footer ------------------------------------------------------------------ */
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+footer p {
+  margin: 0 0 0.75rem;
+}
+
+@media (max-width: 30rem) {
+  .intro h1 {
+    font-size: 1.625rem;
+  }
+
+  article h1 {
+    font-size: 1.5rem;
+  }
+}

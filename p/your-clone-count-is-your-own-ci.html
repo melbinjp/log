@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your GitHub clone count is mostly your own CI - The Log</title>
+<meta name="description" content="301 clones from 17 unique cloners looked like adoption. One extra API call showed every clone day was a day the repository ran its own workflows. Here is how to check yours.">
+<link rel="canonical" href="https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html">
+<meta name="author" content="Melbin J Paulose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Your GitHub clone count is mostly your own CI - The Log">
+<meta property="og:description" content="301 clones from 17 unique cloners looked like adoption. One extra API call showed every clone day was a day the repository ran its own workflows. Here is how to check yours.">
+<meta property="og:url" content="https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html">
+<meta property="og:site_name" content="The Log">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="application/rss+xml" title="The Log" href="https://log.wecanuseai.com/feed.xml">
+<link rel="icon" href="https://favicon.wecanuseai.com/favicon.ico">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <a class="wordmark" href="/">The Log</a>
+  <nav>
+    <a href="https://wecanuseai.com/">wecanuseai.com</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://github.com/melbinjp/log">Source</a>
+  </nav>
+</header>
+<main>
+<article>
+  <h1>Your GitHub clone count is mostly your own CI</h1>
+  <p class="byline"><time datetime="2026-08-21">21 August 2026</time></p>
+<p>GitHub's traffic page said one of my repositories had <strong>301 clones from 17 unique cloners</strong> in a
+fortnight. Seventeen different machines, and the tool had barely been announced. That is what
+early adoption is supposed to look like.</p>
+<p>It was the CI. All of it.</p>
+<h2>The one call that killed it</h2>
+<p>The traffic endpoint gives you clones by day:</p>
+<pre><code class="language-bash">gh api repos/OWNER/REPO/traffic/clones --jq '.clones[] | &quot;\(.timestamp[:10]) \(.count) \(.uniques)&quot;'
+</code></pre>
+<p>The obvious next question, which I had not asked for two weeks, is whether those are the same
+days your own workflows ran:</p>
+<pre><code class="language-bash">gh api &quot;repos/OWNER/REPO/actions/runs?per_page=100&quot; \
+  --jq '.workflow_runs[].created_at[:10]' | sort -u
+</code></pre>
+<p>Line the two lists up. Mine did not roughly correlate. It matched exactly, in both directions:</p>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Clones</th>
+<th>Unique cloners</th>
+<th>Our workflow runs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>04 to 09 Aug</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10 Aug</td>
+<td>16</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11 Aug</td>
+<td>45</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>12 Aug</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>13 Aug</td>
+<td>15</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>14 Aug</td>
+<td>75</td>
+<td>1</td>
+<td>5</td>
+</tr>
+<tr>
+<td>15 Aug</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>16 Aug</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>17 Aug</td>
+<td>150</td>
+<td>16</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>Every day with clones ran CI. Every day with CI had clones. Every other day recorded <strong>zero
+clones</strong>, not few, zero. The clone count even tracks the run count: nine runs on the busiest
+day, and the largest clone total of the fortnight sitting under it.</p>
+<p>Nine of the fourteen days in a fortnight that looked like early adoption had no activity on the
+repository at all.</p>
+<p>(The daily unique counts add up to more than the 17 for the period. That is not an error in
+either: GitHub deduplicates uniques across the window it is asked for, so a cloner seen on two
+days counts twice by day and once for the fortnight. It is the same reason you cannot sum a
+week of unique visitors and get the week's figure.)</p>
+<h2>Why the unique count is the worse half</h2>
+<p>The total was never very convincing on its own. It was <code>17 unique cloners</code> that made it look
+like people, and that number is the one to distrust most.</p>
+<p><strong>A GitHub Actions checkout is a clone, and each runner is a different cloner.</strong> Runners are
+ephemeral machines, so a repository that runs a five-job matrix twice a day manufactures ten
+"unique cloners" a day, forever, without a single human being involved. The number that looks
+hardest to fake is the one your own CI inflates fastest.</p>
+<p>A second repository of mine reported 68 unique cloners over a fortnight. Same cause.</p>
+<h2>The number to compute instead</h2>
+<p>Neither raw figure is worth reading, so I stopped reading them. The one my watcher prints now
+is <strong>human clone days</strong>: days that recorded clones and no workflow run of ours.</p>
+<pre><code>docproof   0 human clone days
+rigout     7 human clone days
+</code></pre>
+<p>The first number is honest and disappointing and took ten seconds to compute. The second says
+something real: seven days in a fortnight, somebody who was not a machine of mine pulled that
+repository.</p>
+<p>One trap on the way there. The runs endpoint pages at 100, and one of these repositories was
+already at 99 runs for the fortnight. If you take a truncated list of CI days as the complete
+list, days that <em>were</em> CI look like days that were not, and your own runners get promoted to
+strangers. Report an incomplete page as <strong>unknown</strong>, never as zero:</p>
+<pre><code class="language-bash">gh api &quot;repos/OWNER/REPO/actions/runs?per_page=100&quot; --jq '.total_count'
+</code></pre>
+<p>If that comes back at or above 100 for your window, page it properly before you trust the answer.</p>
+<h2>PyPI does the same thing</h2>
+<p>The same evening I checked the package downloads, expecting them to be the clean number.
+<code>pypistats</code> reported <strong>87 downloads yesterday, 95 in the week, 233 in the month</strong> for a small
+Python package. Read as adoption, that is a package with pull.</p>
+<p>The daily series took one more call:</p>
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Downloads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-08-01</td>
+<td>81, and <code>0.3.0</code> was uploaded that day</td>
+</tr>
+<tr>
+<td>2026-08-17</td>
+<td>87, and <code>0.3.1</code> was uploaded that day</td>
+</tr>
+<tr>
+<td>Every other day</td>
+<td>1 to 9</td>
+</tr>
+</tbody>
+</table>
+<p>Across the whole ledger: <strong>490 downloads over 32 days, 372 of them on 4 release days.</strong> Seventy
+six per cent. A typical non release day is 3, and the best day that was not a release is 13.</p>
+<p>Publishing a release makes mirrors, caches and dependency bots fetch you. That is not demand, it
+is the packaging ecosystem noticing a new version, and it lands entirely on days you can predict
+from your own git tags.</p>
+<p>So the number I track there is <strong>the best non release day</strong>. It only ever goes up, and when it
+goes up it means somebody who was not a release pulled more of that package than ever before.</p>
+<h2>The rule this leaves</h2>
+<p>Three headline numbers in one night, and every one of them was my own machinery reflected back
+at me. That is not a coincidence about my projects. It is the ordinary condition of a small
+project:</p>
+<p><strong>Every distribution metric available to you is dominated by your own activity, and each one
+reads as adoption until you split it.</strong></p>
+<p>The split is one extra API call in every case. Which is the annoying part, because the reason I
+had not made that call for two weeks was not that it was hard. It was that the unsplit number
+was the one I wanted to be true.</p>
+<p>Three questions worth an hour on your own repositories:</p>
+<ul>
+<li>Do your clone days line up with your workflow days?</li>
+<li>Do your download spikes line up with your release tags?</li>
+<li>Does the tool that shows you these numbers do the split for you, or are you doing it by
+  remembering to?</li>
+</ul>
+<p>If it is the third, you will stop remembering. Mine does the split itself now and prints the
+honest figure, because the flattering one had already got as far as a draft pitch before anybody
+checked it.</p>
+  <p class="back"><a href="/">All entries</a></p>
+</article>
+</main>
+<footer>
+  <p>Every claim here carries a receipt: a commit, a pull request, or a measurement you can re-run.</p>
+  <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
+     Corrections are welcome as
+     <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
+     would rather fix it than keep it.</p>
+</footer>
+</body>
+</html>

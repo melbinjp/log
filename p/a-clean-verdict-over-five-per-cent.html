@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A clean verdict over five per cent of a repository is not a clean repository - The Log</title>
+<meta name="description" content="Three ways a documentation checker of mine reported success while blind in one evening, what each cost, and what caught it.">
+<link rel="canonical" href="https://log.wecanuseai.com/p/a-clean-verdict-over-five-per-cent.html">
+<meta name="author" content="Melbin J Paulose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A clean verdict over five per cent of a repository is not a clean repository - The Log">
+<meta property="og:description" content="Three ways a documentation checker of mine reported success while blind in one evening, what each cost, and what caught it.">
+<meta property="og:url" content="https://log.wecanuseai.com/p/a-clean-verdict-over-five-per-cent.html">
+<meta property="og:site_name" content="The Log">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="application/rss+xml" title="The Log" href="https://log.wecanuseai.com/feed.xml">
+<link rel="icon" href="https://favicon.wecanuseai.com/favicon.ico">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <a class="wordmark" href="/">The Log</a>
+  <nav>
+    <a href="https://wecanuseai.com/">wecanuseai.com</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://github.com/melbinjp/log">Source</a>
+  </nav>
+</header>
+<main>
+<article>
+  <h1>A clean verdict over five per cent of a repository is not a clean repository</h1>
+  <p class="byline"><time datetime="2026-08-21">21 August 2026</time></p>
+<p>If you ship a tool that checks things, the failure that will embarrass you is not the one where
+it breaks. It is the one where it reports success while blind, because that looks exactly like
+it working. Here are three of mine from one evening, what each one cost, and what caught it.</p>
+<p>The tool is <a href="https://github.com/melbinjp/docproof">docproof</a>: it reads a repository's
+documentation and reports the claims its code contradicts.</p>
+<h3>It could not see the worse half of the defect it exists to find</h3>
+<p>It read paths out of backticked spans only, so <code>`src/config.rs`</code> was checked and the same
+path as a link target was invisible. Turning findings into a patch showed it: six reported in
+one repository, eleven actually wrong, five of them the same paths a line or two away in link
+form. <strong>A backticked path that is wrong is a sentence someone might mistrust. A link target that
+is wrong is a 404 they click.</strong></p>
+<h3>Then it reported twelve things that were all fine</h3>
+<p>The first large repository I pointed the new feature at was FastAPI. Twelve broken paths. A
+great result, if you stop there.</p>
+<p>Eleven translations of one page link to <code>fastapi-people.md</code> in their own language directory, and
+those per-language copies were deliberately deleted in 2024 so one English page stays current.
+<code>scripts/docs.py</code>, line 221:</p>
+<pre><code class="language-python">shutil.copytree(en_docs_source_path, staged_docs_path)
+</code></pre>
+<p><strong>A translated documentation tree is an overlay, not a copy.</strong> Every language build starts as a
+full copy of the English docs with translations written over the top, so a page nobody
+translated is present in every language at build time. All twelve links work.</p>
+<p>Nothing in the tool caught that. Reading the build script instead of the diff did.</p>
+<h3>The tests for the fix passed with the fix switched off</h3>
+<p>I wrote the rule, wrote six tests, watched them pass, then stubbed the rule out and ran them
+again. They still passed: without it the claim falls through to "this repository has never had
+this path", which is also a skip. Two reasons wearing one verdict. They assert the reason now.</p>
+<h3>The most useful line in the output is the one about itself</h3>
+<p>Every report says what it read. Not "clean" but <strong>"judged 13 of 239 documentation files, 5%"</strong>.</p>
+<p>Across 242 repositories, 228 hold documentation the default scope never opens. On one it read
+five per cent of the documents, reported nothing wrong, and said so plainly enough that I could
+see the verdict was worthless.</p>
+<p><strong>A check that does not say what it read cannot be told apart from one that read nothing.</strong></p>
+<p>So: what does your checker say it read? If the answer is "nothing, it just says clean", that is
+worth an afternoon.</p>
+<p>Point this at a documentation tree nobody has opened in a year and tell me what it gets wrong. I
+want the false positives more than the findings. MIT, runs as a GitHub Action:
+<a href="https://github.com/melbinjp/docproof">github.com/melbinjp/docproof</a>.</p>
+  <p class="back"><a href="/">All entries</a></p>
+</article>
+</main>
+<footer>
+  <p>Every claim here carries a receipt: a commit, a pull request, or a measurement you can re-run.</p>
+  <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
+     Corrections are welcome as
+     <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
+     would rather fix it than keep it.</p>
+</footer>
+</body>
+</html>

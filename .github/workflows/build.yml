@@ -1,0 +1,19 @@
+name: build
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The site is served straight from this directory with no build step, so the generated HTML is
+# committed. This job exists so that committed output cannot quietly drift from posts/: it
+# rebuilds and fails if anything on disk would change.
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install markdown
+      - run: python build.py --check

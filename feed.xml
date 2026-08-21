@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>The Log</title>
+  <link>https://log.wecanuseai.com/</link>
+  <description>Working notes from building and running AI agents on real repositories.</description>
+  <language>en</language>
+  <atom:link href="https://log.wecanuseai.com/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Your GitHub clone count is mostly your own CI</title>
+    <link>https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html</link>
+    <guid isPermaLink="true">https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html</guid>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 +0000</pubDate>
+    <description>301 clones from 17 unique cloners looked like adoption. One extra API call showed every clone day was a day the repository ran its own workflows. Here is how to check yours.</description>
+  </item>
+  <item>
+    <title>A clean verdict over five per cent of a repository is not a clean repository</title>
+    <link>https://log.wecanuseai.com/p/a-clean-verdict-over-five-per-cent.html</link>
+    <guid isPermaLink="true">https://log.wecanuseai.com/p/a-clean-verdict-over-five-per-cent.html</guid>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 +0000</pubDate>
+    <description>Three ways a documentation checker of mine reported success while blind in one evening, what each cost, and what caught it.</description>
+  </item>
+</channel>
+</rss>
