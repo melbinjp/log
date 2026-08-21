@@ -116,16 +116,21 @@ The same evening I checked the package downloads, expecting them to be the clean
 `pypistats` reported **87 downloads yesterday, 95 in the week, 233 in the month** for a small
 Python package. Read as adoption, that is a package with pull.
 
-The daily series took one more call:
+The daily series took one more call. Over the 35 days to 20 August 2026, that package was
+downloaded 502 times, and this is where they landed:
 
-| Day | Downloads |
-|---|---|
-| 2026-08-01 | 81, and `0.3.0` was uploaded that day |
-| 2026-08-17 | 87, and `0.3.1` was uploaded that day |
-| Every other day | 1 to 9 |
+| Day | Downloads | |
+|---|---|---|
+| 2026-07-01 | 110 | release |
+| 2026-07-09 | 94 | release |
+| 2026-08-17 | 87 | release |
+| 2026-08-01 | 81 | release |
+| 2026-07-11 | 13 | the best day that was not a release |
+| The other 30 days | 117 between them | median 3 |
 
-Across the whole ledger: **490 downloads over 32 days, 372 of them on 4 release days.** Seventy
-six per cent. A typical non release day is 3, and the best day that was not a release is 13.
+**Four release days took 372 of 502 downloads, or 74 per cent.** The four biggest days of the
+period are the four days a version was published, in a straight run before any ordinary day
+appears. A typical day is 3.
 
 Publishing a release makes mirrors, caches and dependency bots fetch you. That is not demand, it
 is the packaging ecosystem noticing a new version, and it lands entirely on days you can predict
