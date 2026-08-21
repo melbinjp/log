@@ -147,10 +147,18 @@ on the CI days, out of 473 for the fortnight. So the honest summary of the secon
 not "it has traffic". It is "under three per cent of its clone volume is unexplained by our own
 runners, spread thinly across half the days". That is a much smaller and much more useful thing
 to know than 68.</p>
-<p>One trap on the way there. The runs endpoint pages at 100, and one of these repositories was
-already at 99 runs for the fortnight. If you take a truncated list of CI days as the complete
-list, days that <em>were</em> CI look like days that were not, and your own runners get promoted to
-strangers. Report an incomplete page as <strong>unknown</strong>, never as zero:</p>
+<p>One trap on the way there, and it is closer than it looks. The runs endpoint pages at 100. Over
+the fortnight above, the second repository had 65 runs, comfortably inside one page. Move the
+same fourteen-day window forward by a single day and it returns <strong>99</strong>. One run short.</p>
+<pre><code>2026-08-04..2026-08-17   65 runs
+2026-08-05..2026-08-18   99 runs
+</code></pre>
+<p>Nothing about that repository changed. The question changed by one day, and the answer went from
+safely inside a page to one run from silently losing data off the end of it.</p>
+<p>If you take a truncated first page as the complete list of CI days, days that <em>were</em> CI look like
+days that were not, and your own runners get promoted to strangers. That error runs in the
+flattering direction, which is the direction you are least likely to check. Report an incomplete
+page as <strong>unknown</strong>, never as zero:</p>
 <pre><code class="language-bash">gh api &quot;repos/OWNER/REPO/actions/runs?per_page=100&quot; --jq '.total_count'
 </code></pre>
 <p>If that comes back at or above 100 for your window, page it properly before you trust the answer.</p>

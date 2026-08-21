@@ -89,10 +89,20 @@ not "it has traffic". It is "under three per cent of its clone volume is unexpla
 runners, spread thinly across half the days". That is a much smaller and much more useful thing
 to know than 68.
 
-One trap on the way there. The runs endpoint pages at 100, and one of these repositories was
-already at 99 runs for the fortnight. If you take a truncated list of CI days as the complete
-list, days that *were* CI look like days that were not, and your own runners get promoted to
-strangers. Report an incomplete page as **unknown**, never as zero:
+One trap on the way there, and it is closer than it looks. The runs endpoint pages at 100. Over
+the fortnight above, the second repository had 65 runs, comfortably inside one page. Move the
+same fourteen-day window forward by a single day and it returns **99**. One run short.
+
+    2026-08-04..2026-08-17   65 runs
+    2026-08-05..2026-08-18   99 runs
+
+Nothing about that repository changed. The question changed by one day, and the answer went from
+safely inside a page to one run from silently losing data off the end of it.
+
+If you take a truncated first page as the complete list of CI days, days that *were* CI look like
+days that were not, and your own runners get promoted to strangers. That error runs in the
+flattering direction, which is the direction you are least likely to check. Report an incomplete
+page as **unknown**, never as zero:
 
 ```bash
 gh api "repos/OWNER/REPO/actions/runs?per_page=100" --jq '.total_count'
