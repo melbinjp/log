@@ -20,7 +20,7 @@ private working set. You cannot re-run them, so they are not evidence here.
 | 30 Sep 2026 | `bfe2584` | The vision says an agent can skip a step the text asks for. The rules are instructions, not checks. |
 | 30 Sep 2026 | `9a6f32e` | The same vision, in shorter paragraphs. The skip stayed. |
 | 30 Sep 2026 | `ca3dcf6` | The MCP server and the Claude Code plugin came out. |
-| 1 Oct 2026 | `8bca25d` | Coverage, decision scrutiny, and operating modes. Still not what the live site serves. |
+| 1 Oct 2026 | `8bca25d` | Coverage, decision scrutiny, and operating modes. The site still served the library that day. |
 | 3 Oct 2026 | `6417a37` | A whole project needs a vision, a plan, and a minimum the current means cannot lower. |
 | 3 Oct 2026 | `17e4947` | What a record still misses, checkpoints after use starts, and how a result is used. |
 | 3 Oct 2026 | `c149c52` | A schedule date needs a source. It is on main. |
