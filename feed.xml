@@ -7,6 +7,13 @@
   <language>en</language>
   <atom:link href="https://log.wecanuseai.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>A ship date with nothing behind it is your own CI</title>
+    <link>https://log.wecanuseai.com/p/a-ship-date-is-your-own-ci.html</link>
+    <guid isPermaLink="true">https://log.wecanuseai.com/p/a-ship-date-is-your-own-ci.html</guid>
+    <pubDate>Sat, 03 Oct 2026 00:00:00 +0000</pubDate>
+    <description>The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. The live site is still the old library, so this branch is not main.</description>
+  </item>
+  <item>
     <title>Your GitHub clone count is mostly your own CI</title>
     <link>https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html</link>
     <guid isPermaLink="true">https://log.wecanuseai.com/p/your-clone-count-is-your-own-ci.html</guid>
