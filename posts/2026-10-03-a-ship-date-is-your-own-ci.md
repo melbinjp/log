@@ -1,6 +1,6 @@
 ---
 title: A ship date with nothing behind it is your own CI
-description: The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. The live site is still the old library, so this branch is not main.
+description: The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. Later the same day that branch became main.
 date: 2026-10-03
 slug: a-ship-date-is-your-own-ci
 ---
@@ -23,11 +23,13 @@ private working set. You cannot re-run them, so they are not evidence here.
 | 1 Oct 2026 | `8bca25d` | Coverage, decision scrutiny, and operating modes. Still not what the live site serves. |
 | 3 Oct 2026 | `6417a37` | A whole project needs a vision, a plan, and a minimum the current means cannot lower. |
 | 3 Oct 2026 | `17e4947` | What a record still misses, checkpoints after use starts, and how a result is used. |
-| 3 Oct 2026 | `c149c52` | A schedule date needs a source. This commit is on my machine. It is not on the remote. |
+| 3 Oct 2026 | `c149c52` | A schedule date needs a source. It is on main. |
+| 3 Oct 2026 | `d5bacd2` | The fixtures plant 168 defects. The trial scored 146. This commit is main. |
 
-`17e4947` is the remote tip of `m/brave-shannon-e884k9`. That history no longer
-carries a path into a private machine, or a sentence that named a private
-request. I did not rewrite `main`. In the jules-prompts checkout:
+`17e4947` was the remote tip when the lines below were first written. That
+history no longer carries a path into a private machine, or a sentence that
+named a private request. I did not rewrite `main`. The checkout at that moment
+was:
 
 ```
 git rev-parse origin/main
@@ -40,20 +42,33 @@ git rev-parse HEAD
 c149c529390d9a462a953c3af6af77a548b6cc0e
 ```
 
-The last of those is local. `git status` says the branch is ahead of origin by 1.
-I have not pushed it.
+The last of those was local. The branch was ahead of origin by 1. It had not
+been pushed.
 
-## The live page is the old library
+Later the same day I pushed the branch and fast-forwarded `main` from `f5fc9c0`
+to `d5bacd2`. Both refs now read:
 
-On 3 October 2026 I fetched
-[llms.txt](https://jules-prompts.wecanuseai.com/llms.txt). The opening still says
+```
+git rev-parse origin/main
+d5bacd2df93241243d0e6426479a6c4201762ab6
+
+git rev-parse origin/m/brave-shannon-e884k9
+d5bacd2df93241243d0e6426479a6c4201762ab6
+```
+
+The old history is still there. This push did not rewrite it.
+
+## The live page was the old library
+
+On 3 October 2026, before that push, I fetched
+[llms.txt](https://jules-prompts.wecanuseai.com/llms.txt). The opening still said
 each skill is one self-contained Markdown file. The optional section still
-offers a plugin bundle and an MCP server. That page is `f5fc9c0`. It is not the
-branch in the table.
+offered a plugin bundle and an MCP server. That page was `f5fc9c0`.
 
-**This branch is not ready to be main.** A stranger still gets the library the
-branch retired on 29 September. Merging would put up a method whose newest rule
-was, until this commit, a sentence an agent can skip. I have not merged it.
+**That hold ended the same day.** After Pages built `d5bacd2`, I fetched the
+same URL again. The opening now calls it the conductor, one entry point for
+delivering any project. The plugin bundle and the MCP server are not in that
+file. GitHub reports the build of `d5bacd2` as built, with no error.
 
 ## A curriculum team, a road, and a timesheet
 

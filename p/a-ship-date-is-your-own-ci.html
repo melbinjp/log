@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A ship date with nothing behind it is your own CI - The Log</title>
-<meta name="description" content="The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. The live site is still the old library, so this branch is not main.">
+<meta name="description" content="The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. Later the same day that branch became main.">
 <link rel="canonical" href="https://log.wecanuseai.com/p/a-ship-date-is-your-own-ci.html">
 <meta name="author" content="Melbin J Paulose">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A ship date with nothing behind it is your own CI - The Log">
-<meta property="og:description" content="The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. The live site is still the old library, so this branch is not main.">
+<meta property="og:description" content="The last note here was 21 August 2026. Since then a method grew rules an agent can skip, and a calendar date with no source. The check below fails that date. Later the same day that branch became main.">
 <meta property="og:url" content="https://log.wecanuseai.com/p/a-ship-date-is-your-own-ci.html">
 <meta property="og:site_name" content="The Log">
 <meta name="twitter:card" content="summary">
@@ -83,13 +83,19 @@ private working set. You cannot re-run them, so they are not evidence here.</p>
 <tr>
 <td>3 Oct 2026</td>
 <td><code>c149c52</code></td>
-<td>A schedule date needs a source. This commit is on my machine. It is not on the remote.</td>
+<td>A schedule date needs a source. It is on main.</td>
+</tr>
+<tr>
+<td>3 Oct 2026</td>
+<td><code>d5bacd2</code></td>
+<td>The fixtures plant 168 defects. The trial scored 146. This commit is main.</td>
 </tr>
 </tbody>
 </table>
-<p><code>17e4947</code> is the remote tip of <code>m/brave-shannon-e884k9</code>. That history no longer
-carries a path into a private machine, or a sentence that named a private
-request. I did not rewrite <code>main</code>. In the jules-prompts checkout:</p>
+<p><code>17e4947</code> was the remote tip when the lines below were first written. That
+history no longer carries a path into a private machine, or a sentence that
+named a private request. I did not rewrite <code>main</code>. The checkout at that moment
+was:</p>
 <pre><code>git rev-parse origin/main
 f5fc9c0e721f4323f4ee79554220bb76128f796d
 
@@ -99,17 +105,26 @@ git rev-parse origin/m/brave-shannon-e884k9
 git rev-parse HEAD
 c149c529390d9a462a953c3af6af77a548b6cc0e
 </code></pre>
-<p>The last of those is local. <code>git status</code> says the branch is ahead of origin by 1.
-I have not pushed it.</p>
-<h2>The live page is the old library</h2>
-<p>On 3 October 2026 I fetched
-<a href="https://jules-prompts.wecanuseai.com/llms.txt">llms.txt</a>. The opening still says
+<p>The last of those was local. The branch was ahead of origin by 1. It had not
+been pushed.</p>
+<p>Later the same day I pushed the branch and fast-forwarded <code>main</code> from <code>f5fc9c0</code>
+to <code>d5bacd2</code>. Both refs now read:</p>
+<pre><code>git rev-parse origin/main
+d5bacd2df93241243d0e6426479a6c4201762ab6
+
+git rev-parse origin/m/brave-shannon-e884k9
+d5bacd2df93241243d0e6426479a6c4201762ab6
+</code></pre>
+<p>The old history is still there. This push did not rewrite it.</p>
+<h2>The live page was the old library</h2>
+<p>On 3 October 2026, before that push, I fetched
+<a href="https://jules-prompts.wecanuseai.com/llms.txt">llms.txt</a>. The opening still said
 each skill is one self-contained Markdown file. The optional section still
-offers a plugin bundle and an MCP server. That page is <code>f5fc9c0</code>. It is not the
-branch in the table.</p>
-<p><strong>This branch is not ready to be main.</strong> A stranger still gets the library the
-branch retired on 29 September. Merging would put up a method whose newest rule
-was, until this commit, a sentence an agent can skip. I have not merged it.</p>
+offered a plugin bundle and an MCP server. That page was <code>f5fc9c0</code>.</p>
+<p><strong>That hold ended the same day.</strong> After Pages built <code>d5bacd2</code>, I fetched the
+same URL again. The opening now calls it the conductor, one entry point for
+delivering any project. The plugin bundle and the MCP server are not in that
+file. GitHub reports the build of <code>d5bacd2</code> as built, with no error.</p>
 <h2>A curriculum team, a road, and a timesheet</h2>
 <p>I opened the pages. The figures below are the ones those pages state.</p>
 <p>Bent Flyvbjerg, "From Nobel Prize to Project Management: Getting Risks Right",
@@ -215,8 +230,8 @@ with a calendar face.</p>
      repository's documentation makes that its code contradicts;
      <a href="https://github.com/melbinjp/rigout">rigout</a>, an MCP server that lets an
      authorised agent use a real machine; and
-     <a href="https://jules-prompts.wecanuseai.com/">jules-prompts</a>, a library of
-     machine-readable task prompts for coding agents.</p>
+     <a href="https://jules-prompts.wecanuseai.com/">jules-prompts</a>, the conductor:
+     one skill for delivering a project, with evidence.</p>
   <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
      Corrections are welcome as
      <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
