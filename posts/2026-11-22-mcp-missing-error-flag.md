@@ -7,7 +7,7 @@ slug: mcp-missing-error-flag
 A tool call can fail while its wrapper reports success. In rigout, one cause was a result without a recognised error flag.
 
 [rigout](https://github.com/melbinjp/rigout) gives authorised AI agents access to a machine through MCP.
-It supports command execution, files and Docker. A false success result can send the next step in the wrong direction.
+It supports command execution, processes and files. A false success result can send the next step in the wrong direction.
 
 The defect was in the result adapter. MCP used `isError` in one supported version and `is_error` in another.
 The adapter checked both names. If neither existed, its fallback returned `None`. Python converts `None` to `False`.
@@ -26,7 +26,7 @@ The tests cover both field names, true and false values, an explicit `None`, and
 For a tool adapter, the useful question is simple: what happens when the response changes shape?
 Test that case directly. A familiar success response cannot prove how an unfamiliar response will behave.
 
-This repair is merged in the repository. It does not establish that every installed package contains the repair.
+This repair shipped in [rigout 0.4.1 on PyPI](https://pypi.org/project/rigout/0.4.1/).
 
 If your team needs help with an agent integration or an existing automation, send the workflow, the observed failure and the required result to
 [melbinjpaulose@gmail.com](mailto:melbinjpaulose@gmail.com?subject=Agent%20integration%20or%20automation).

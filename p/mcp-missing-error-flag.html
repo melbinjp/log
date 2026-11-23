@@ -32,7 +32,7 @@
   <p class="byline"><time datetime="2026-11-22">22 November 2026</time></p>
 <p>A tool call can fail while its wrapper reports success. In rigout, one cause was a result without a recognised error flag.</p>
 <p><a href="https://github.com/melbinjp/rigout">rigout</a> gives authorised AI agents access to a machine through MCP.
-It supports command execution, files and Docker. A false success result can send the next step in the wrong direction.</p>
+It supports command execution, processes and files. A false success result can send the next step in the wrong direction.</p>
 <p>The defect was in the result adapter. MCP used <code>isError</code> in one supported version and <code>is_error</code> in another.
 The adapter checked both names. If neither existed, its fallback returned <code>None</code>. Python converts <code>None</code> to <code>False</code>.
 The wrapper therefore treated an unknown result as a successful call.</p>
@@ -45,7 +45,7 @@ This preserves the supported result behaviour while rejecting an unknown format.
 The tests cover both field names, true and false values, an explicit <code>None</code>, and an object with neither field.</p>
 <p>For a tool adapter, the useful question is simple: what happens when the response changes shape?
 Test that case directly. A familiar success response cannot prove how an unfamiliar response will behave.</p>
-<p>This repair is merged in the repository. It does not establish that every installed package contains the repair.</p>
+<p>This repair shipped in <a href="https://pypi.org/project/rigout/0.4.1/">rigout 0.4.1 on PyPI</a>.</p>
 <p>If your team needs help with an agent integration or an existing automation, send the workflow, the observed failure and the required result to
 <a href="mailto:melbinjpaulose@gmail.com?subject=Agent%20integration%20or%20automation">melbinjpaulose@gmail.com</a>.
 For a role, include the scope, location and assessment format. I am based in Kozhikode, India.</p>
