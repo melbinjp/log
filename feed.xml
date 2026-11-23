@@ -7,6 +7,13 @@
   <language>en</language>
   <atom:link href="https://log.wecanuseai.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>When an MCP result loses its error flag</title>
+    <link>https://log.wecanuseai.com/p/mcp-missing-error-flag.html</link>
+    <guid isPermaLink="true">https://log.wecanuseai.com/p/mcp-missing-error-flag.html</guid>
+    <pubDate>Sun, 22 Nov 2026 00:00:00 +0000</pubDate>
+    <description>A missing error flag made an unknown tool result look successful. The rigout repair rejects that result and shows what arrived.</description>
+  </item>
+  <item>
     <title>From a project manual to an enforced production process</title>
     <link>https://log.wecanuseai.com/p/enforced-production-process.html</link>
     <guid isPermaLink="true">https://log.wecanuseai.com/p/enforced-production-process.html</guid>
