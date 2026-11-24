@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How DocQA blocks bot walls, bounds vision scans, and cites pages - The Log</title>
+<meta name="description" content="Three DocQA_api fixes reject challenge pages, judge scans across the document in a 75s budget, and cite pages in each sentence.">
+<link rel="canonical" href="https://log.wecanuseai.com/p/docqa-bot-check-and-citations.html">
+<meta name="author" content="Melbin J Paulose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How DocQA blocks bot walls, bounds vision scans, and cites pages - The Log">
+<meta property="og:description" content="Three DocQA_api fixes reject challenge pages, judge scans across the document in a 75s budget, and cite pages in each sentence.">
+<meta property="og:url" content="https://log.wecanuseai.com/p/docqa-bot-check-and-citations.html">
+<meta property="og:site_name" content="The Log">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="application/rss+xml" title="The Log" href="https://log.wecanuseai.com/feed.xml">
+<link rel="icon" href="https://favicon.wecanuseai.com/favicon.ico">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <a class="wordmark" href="/">The Log</a>
+  <nav>
+    <a href="https://wecanuseai.com/">wecanuseai.com</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://github.com/melbinjp/log">Source</a>
+  </nav>
+</header>
+<main>
+<article>
+  <h1>How DocQA blocks bot walls, bounds vision scans, and cites pages</h1>
+  <p class="byline"><time datetime="2026-11-24">24 November 2026</time></p>
+<p>A document Q&amp;A session fails quietly when the fetch layer stores the wrong file.
+It also fails when the reader stalls past the HTTP request window.
+Three fixes in <a href="https://github.com/melbinjp/DocQA_api">DocQA_api</a> close those paths at ingest and answer generation.</p>
+<p>When a user sent a tenancy agreement URL, the host served the PDF to browsers.
+The same host sent an HTML verification gate and a placeholder PDF to the server.
+Every stage ran without error.
+The session kept the requested URL label while its index held unrelated text.</p>
+<p>The <a href="https://github.com/melbinjp/DocQA_api/commit/b2dbe9e">bot-wall guard</a> adds <code>looks_like_a_bot_wall</code> in <code>utils/url_fetch.py</code>.
+It checks extracted payloads up to 2,500 characters (<code>_BOT_WALL_MAX_CHARS</code>) against seven challenge markers.
+Example markers include "Please wait while your request is being verified" and "Enable JavaScript and cookies to continue".
+When a marker matches, ingest returns HTTP 400.
+The response tells the user to download and upload the file.
+Real long documents stay safe because the check stops above 2,500 characters.</p>
+<p>A second failure hit a 75-page paper (GPT-3) with HTTP 504 timeouts on URL ingest.
+A per-page check treated three low-text figure pages as scanned pages.
+Those three pages triggered a three-model fallback ladder with a 90s per-attempt timeout and no total deadline.</p>
+<p>The <a href="https://github.com/melbinjp/DocQA_api/commit/6ac24b6">vision-budget fix</a> moves <code>pages_for_vision</code> in <code>utils/vision.py</code> to a document threshold (<code>SCANNED_PAGE_FRACTION = 0.5</code>).
+Under scanned mode, a document triggers page transcription only when half or more pages have no text.
+Figure pages in text-heavy papers therefore stay with their captions.
+In <code>transcribe_pages</code>, each attempt drops to 40s.
+An <code>asyncio.wait_for</code> cap (<code>VISION_BUDGET_SECONDS = 75.0</code>) ends the pass cleanly inside one request.</p>
+<p>Page numbers previously appeared only in the eight source cards below the answer.
+Readers had to match each claim to an excerpt by hand.
+The <a href="https://github.com/melbinjp/DocQA_api/commit/4a1a5a1">citation prompt update</a> in <code>app.py</code> (<code>generate_rag_response</code>) fixes this gap.
+It directs the model to cite <code>(page 4)</code> or <code>(report.pdf, page 4)</code> inside the claim sentence.
+The prompt restricts labels to the excerpt headings.
+For unpaged files such as HTML or plain text, it names the document only.</p>
+<p>The live tool runs at <a href="https://docqa.wecanuseai.com">docqa.wecanuseai.com</a>.
+Regression tests live in <code>tests/test_url_ingest.py</code> and <code>tests/test_vision.py</code>.</p>
+<p>If your team needs help with document pipelines, agent tools, or backend reliability, send the workflow, failure, and required result to <a href="mailto:melbinjpaulose@gmail.com?subject=Document%20pipeline%20or%20agent%20tooling">melbinjpaulose@gmail.com</a>.
+For a role, include the scope, location, and assessment format.
+I am based in Kozhikode, India.</p>
+  <p class="back"><a href="/">All entries</a></p>
+</article>
+</main>
+<footer>
+  <p>Every claim here carries a receipt: a commit, a pull request, or a measurement you can re-run.</p>
+  <p class="what">What the writing is about, mostly:
+     <a href="https://github.com/melbinjp/docproof">docproof</a>, which reports the claims a
+     repository's documentation makes that its code contradicts;
+     <a href="https://github.com/melbinjp/rigout">rigout</a>, an MCP server that lets an
+     authorised agent use a real machine; and
+     <a href="https://jules-prompts.wecanuseai.com/">jules-prompts</a>, the conductor:
+     one skill for delivering a project, with evidence.</p>
+  <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
+     Corrections are welcome as
+     <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
+     would rather fix it than keep it.</p>
+</footer>
+</body>
+</html>
