@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Replacing 900-line agent manuals and cron loops with an 80-byte cursor - The Log</title>
+<meta name="description" content="Moving cron polling, spam filtering, and drift checks out of LLM prompts into small Python scripts cut quota burn and stale docs.">
+<link rel="canonical" href="https://log.wecanuseai.com/p/cutting-agent-prose-and-polling-noise.html">
+<meta name="author" content="Melbin J Paulose">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Replacing 900-line agent manuals and cron loops with an 80-byte cursor - The Log">
+<meta property="og:description" content="Moving cron polling, spam filtering, and drift checks out of LLM prompts into small Python scripts cut quota burn and stale docs.">
+<meta property="og:url" content="https://log.wecanuseai.com/p/cutting-agent-prose-and-polling-noise.html">
+<meta property="og:site_name" content="The Log">
+<meta name="twitter:card" content="summary">
+<link rel="alternate" type="application/rss+xml" title="The Log" href="https://log.wecanuseai.com/feed.xml">
+<link rel="icon" href="https://favicon.wecanuseai.com/favicon.ico">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <a class="wordmark" href="/">The Log</a>
+  <nav>
+    <a href="https://wecanuseai.com/">wecanuseai.com</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://github.com/melbinjp/log">Source</a>
+  </nav>
+</header>
+<main>
+<article>
+  <h1>Replacing 900-line agent manuals and cron loops with an 80-byte cursor</h1>
+  <p class="byline"><time datetime="2026-11-28">28 November 2026</time></p>
+<p>Moving cron polling, spam filtering, and drift checks out of language-model prompts into small Python scripts cut our quota burn and stopped stale docs.</p>
+<p>My earliest setup tried to buy reliability with longer instructions.
+At its peak, one workspace carried a 26-skill prompt library and nearly 1,000 lines of operating prose.
+Four separate markdown files repeated the same rate limits, resume rules, and channel caps.</p>
+<p>Both habits failed fast.
+Changing one number in code left three prose documents quietly stating the old rule.
+Scheduled jobs also woke a model on a fixed timer when nothing had arrived.
+Most runs burned quota reading newsletters, social digests, and "Thank you for applying" receipts while real human replies sat buried.</p>
+<p>That failure matches <a href="/p/enforced-production-process.html">our conductor review</a>, <a href="/p/mcp-missing-error-flag.html">rigout's error-flag fix</a>, and <a href="/p/docqa-bot-check-and-citations.html">DocQA's bot-wall guard</a>.
+A language model makes a poor cron daemon, spam filter, and state index.</p>
+<h2>1. Drift checks that never block live work</h2>
+<p>Updating five documentation files in the middle of an urgent fix wastes context and breaks focus.
+Leaving them unchecked creates the opposite trap: the next session reads stale prose as current law.</p>
+<p>We split the two jobs.
+Canonical numbers live once in JSON or Python (<code>cadence_state.json</code>, <code>master.json</code>, <code>boards.txt</code>).
+Shared markdown files hold short <code>&lt;!-- LAIR-SYNC:START:caps --&gt;</code> blocks instead of hand-edited tables.</p>
+<p>A standard-library script (<code>lair_sync.py</code>) checks modification times and content invariants across six dependency chains, then serves <code>/state.json</code> locally:</p>
+<pre><code class="language-bash">python -c &quot;
+import time, subprocess, sys
+t0 = time.perf_counter()
+subprocess.run([sys.executable, '_positioning/tools/lair_sync.py', '--json'],
+                check=True, stdout=subprocess.DEVNULL)
+print(f'{(time.perf_counter() - t0) * 1000:.1f} ms')
+&quot;
+</code></pre>
+<p>The full snapshot finishes in about 45 ms and spends zero model tokens.
+When <code>boards.txt</code> grew from 75 to 349 employer boards during a live run, <code>/state.json</code> flagged <code>DRIFT</code> without stopping the worker.
+Running <code>lair_sync.py --sync</code> afterward updated every linked file in one pass.</p>
+<h2>2. Memory under 4 KB</h2>
+<p>Long transcripts tempt you to feed yesterday's chat back into today's prompt.
+Cost climbs, and old mistakes return.</p>
+<p>Outward writing instead keeps a JSON file under 4 KB with two short lists: <code>what_gained</code> and <code>never_repeat</code>.
+When a concise webhook post brought a paying agency lead inbound, that pattern entered <code>what_gained</code>.
+When an overused opener ("Most workflows break...") turned stale, a regex in <code>guard.py</code> blocked it for good.
+Once a mistake becomes a test, the prompt stays short.</p>
+<h2>3. A 24/7 wakeup trigger at zero idle tokens</h2>
+<p>Fixed 15-minute cron runs waste quota on quiet nights and still lag when someone writes.
+Enabling all X and Reddit emails makes things worse if digests flood the inbox.</p>
+<p>Two small changes solved it:</p>
+<ol>
+<li>In Reddit and X settings, we turned digests and marketing off and kept email alerts only for direct messages, chats, replies, and mentions.</li>
+<li>Inside the local dispatcher (<code>dispatch.py</code>), <code>inbox_watch.py</code> polls Gmail's <code>users.history.list</code> endpoint every 60 seconds with a saved <code>startHistoryId</code> cursor.</li>
+</ol>
+<p>On an empty minute, Gmail returns the current <code>historyId</code> in about 80 bytes and zero model tokens.
+When a new message lands in <code>INBOX</code>, Python rules read only its headers and snippet:</p>
+<ul>
+<li>Promotions, forums, newsletters, social digests, and standard ATS receipts drop at the door.</li>
+<li>Four classes pass: X messages or replies, Reddit chats or replies, recruiter interview or screening links, and known human contacts.</li>
+</ul>
+<p>A matching signal sends a two-line Telegram alert right away.
+It wakes an idle agent at most once every 20 minutes (<code>&lt;= 3</code> wakeups per hour).
+Eleven unit tests in <code>test_board.py</code> and <code>test_inbox_and_sync.py</code> verify these filters and cooldowns in <code>0.04s</code>.</p>
+<h2>What changed</h2>
+<p>The workspace runs quieter now.
+Small scripts watch the clock, filter the inbox, and track which files drifted.
+The model wakes only when there is code to ship or a person waiting on the other side.</p>
+<p>If your team needs reliability gates around Python, FastAPI, Playwright, or MCP workflows, send the bottleneck to <a href="mailto:melbinjpaulose@gmail.com?subject=Agent%20workflow%20or%20tooling">melbinjpaulose@gmail.com</a>.
+If you run a 24/7 local agent yourself, I would love to hear what wakes yours up.</p>
+  <p class="back"><a href="/">All entries</a></p>
+</article>
+</main>
+<footer>
+  <p>Every claim here carries a receipt: a commit, a pull request, or a measurement you can re-run.</p>
+  <p class="what">What the writing is about, mostly:
+     <a href="https://github.com/melbinjp/docproof">docproof</a>, which reports the claims a
+     repository's documentation makes that its code contradicts;
+     <a href="https://github.com/melbinjp/rigout">rigout</a>, an MCP server that lets an
+     authorised agent use a real machine; and
+     <a href="https://jules-prompts.wecanuseai.com/">jules-prompts</a>, the conductor:
+     one skill for delivering a project, with evidence.</p>
+  <p>Written while doing the work, by <a href="https://wecanuseai.com/">Melbin J Paulose</a>.
+     Corrections are welcome as
+     <a href="https://github.com/melbinjp/log/issues">issues</a>: if something here is wrong I
+     would rather fix it than keep it.</p>
+</footer>
+</body>
+</html>

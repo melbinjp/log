@@ -7,6 +7,13 @@
   <language>en</language>
   <atom:link href="https://log.wecanuseai.com/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>Replacing 900-line agent manuals and cron loops with an 80-byte cursor</title>
+    <link>https://log.wecanuseai.com/p/cutting-agent-prose-and-polling-noise.html</link>
+    <guid isPermaLink="true">https://log.wecanuseai.com/p/cutting-agent-prose-and-polling-noise.html</guid>
+    <pubDate>Sat, 28 Nov 2026 00:00:00 +0000</pubDate>
+    <description>Moving cron polling, spam filtering, and drift checks out of LLM prompts into small Python scripts cut quota burn and stale docs.</description>
+  </item>
+  <item>
     <title>How DocQA blocks bot walls, bounds vision scans, and cites pages</title>
     <link>https://log.wecanuseai.com/p/docqa-bot-check-and-citations.html</link>
     <guid isPermaLink="true">https://log.wecanuseai.com/p/docqa-bot-check-and-citations.html</guid>
